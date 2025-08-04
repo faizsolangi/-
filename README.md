@@ -1,4 +1,4 @@
-# 𝐧𝟖𝐧 𝐘𝐨𝐮𝐓𝐮𝐛𝐞 𝐍𝐨𝐭𝐢𝐟𝐢𝐞𝐫
+# n8n YouTube Notifier
 
 Automated workflow to send email notifications for new YouTube video uploads using n8n, YouTube Data API v3, and Gmail.
 
