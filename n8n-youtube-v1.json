@@ -1,0 +1,179 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        -32
+      ],
+      "id": "xyz",   # insert your credentials
+      "name": "Check Youtube"
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/search",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "channelId",
+              "value": "xyz"  # insert your credentials
+            },
+            {
+              "name": "type",
+              "value": "video"
+            },
+            {
+              "name": "order",
+              "value": "date"
+            },
+            {
+              "name": "maxResults",
+              "value": "1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -176,
+        -32
+      ],
+      "id": "xyz", # insert your credentials
+      "name": "HTTP Request",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "xyz",   # insert your credentials
+          "name": "YouTube account 2"
+        },
+        "oAuth2Api": {
+          "id": "xyz",             # insert your credentials 
+          "name": "Unnamed credential 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "xyz",  # insert your credentials
+              "leftValue": "={{ $json.items[0].id.videoId }}",
+              "rightValue": "={{ $json.lastVideoID || \"\" }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        32,
+        -32
+      ],
+      "id": "xyz",         # insert your credentials
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "xyz",  # insert your credentials
+        "subject": "New YouTube Video Uploaded",
+        "emailType": "text",
+        "message": "=New video: {{ $json.items[0].snippet.title }} - https://www.youtube.com/watch?v={{ $json.items[0].id.videoId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        -48
+      ],
+      "id": "xyz",      # insert your credentials  
+      "name": "Send a message",
+      "webhookId": "xyz",      # insert your credentials
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xyz",                      # insert your credentials
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Check Youtube": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "xyz",                     # insert your credentials                
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "xyz"          # insert your credentials
+  },
+  "id": "xyz",                                # insert your credentials
+  "tags": []
+}
