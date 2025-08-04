@@ -2,8 +2,6 @@
 
 Automated workflow to send email notifications for new YouTube video uploads using n8n, YouTube Data API v3, and Gmail.
 
-![Workflow Screenshot](youtube_workflow_screenshot.png)
-
 ## Features
 - Checks for new videos every 5 minutes.
 - Sends instant Gmail notifications with video title and link.
